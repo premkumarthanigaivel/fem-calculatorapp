@@ -3,7 +3,7 @@ import { Fragment, useState } from 'react'
 import DocumentHead from 'components/DocumentHead'
 import ThemeToggle from 'components/ThemeToggle'
 
-//TODO: Configure theme in tailwind config
+// TODO: Configure theme in tailwind config
 
 const CALCULATOR_KEYS = [
 	'7',
