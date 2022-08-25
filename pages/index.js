@@ -2,8 +2,7 @@
 import { Fragment, useState } from 'react'
 import DocumentHead from 'components/DocumentHead'
 import ThemeToggle from 'components/ThemeToggle'
-
-// TODO: Configure theme in tailwind config
+import Theme from 'components/theme'
 
 const CALCULATOR_KEYS = [
 	'7',
@@ -26,7 +25,7 @@ const CALCULATOR_KEYS = [
 
 export default function Home() {
 	const [result, setResult] = useState('')
-	const [togglePosition, setTogglePosition] = useState('start')
+	const [togglePosition, setTogglePosition] = useState('theme1')
 
 	const handleCalculatorKeyClick = (calcKey) => {
 		console.log('calcKey: ', calcKey)
@@ -60,19 +59,23 @@ export default function Home() {
 	}
 
 	const handleThemeToggleClick = () => {
-		if (togglePosition === 'start') setTogglePosition('middle')
-		else if (togglePosition === 'middle') setTogglePosition('end')
-		else if (togglePosition === 'end') setTogglePosition('start')
+		if (togglePosition === 'theme1') setTogglePosition('theme2')
+		else if (togglePosition === 'theme2') setTogglePosition('theme3')
+		else if (togglePosition === 'theme3') setTogglePosition('theme1')
 	}
 
 	return (
 		<Fragment>
 			<DocumentHead />
-			<div className="bg-[rgb(58,71,100)] w-screen h-screen flex items-center justify-center">
+			<div
+				className={`${Theme[togglePosition]['main-bg']}  bg-theme1-main-bg w-screen h-screen flex items-center justify-center transition-all`}
+			>
 				<div className="w-[30rem] h-[32rem] flex-col">
 					{/* Calc and Theme toggle */}
 					<div className="w-full h-10 flex justify-between px-4">
-						<h2 className="font-spartan font-bold text-3xl text-white">
+						<h2
+							className={`font-spartan font-bold text-3xl ${Theme[togglePosition]['label-text']}`}
+						>
 							calc
 						</h2>
 						<ThemeToggle
@@ -81,11 +84,15 @@ export default function Home() {
 						/>
 					</div>
 					{/* Calc result */}
-					<div className="overflow-scroll select-none text-[2.55rem] font-bold  mt-4 mx-4 rounded-md h-[6.5rem] bg-[hsl(224,_36%,_15%)] text-white text-right flex flex-col justify-center pr-4 pb-4">
+					<div
+						className={`transition-colors overflow-scroll select-none text-[2.55rem] font-bold  mt-4 mx-4 rounded-md h-[6.5rem]  ${Theme[togglePosition]['label-text']} text-right flex flex-col justify-center pr-4 pb-4 ${Theme[togglePosition]['result-bg']}`}
+					>
 						{result}
 					</div>
 					{/* Calc keypad */}
-					<div className="mt-3  mx-4 rounded-md grid grid-cols-4 gap-4 justify-center justify-content-center justify-items-center py-[1.25rem] px-4 bg-[hsl(223,_31%,_20%)]">
+					<div
+						className={`mt-3  mx-4 rounded-md grid grid-cols-4 gap-4 justify-center justify-content-center justify-items-center py-[1.25rem] px-4 ${Theme[togglePosition]['keypad-bg']}`}
+					>
 						{CALCULATOR_KEYS.map((key, idx) => {
 							if (key === 'DEL') {
 								return (
@@ -94,7 +101,7 @@ export default function Home() {
 										onClick={() =>
 											handleCalculatorKeyClick(key)
 										}
-										className="select-none hover:pb-[2px] cursor-pointer hover:bg-[hsl(225,_21%,_55%)] bg-[hsl(225,_21%,_49%)] w-20 h-[3.2rem] flex items-center justify-center text-white rounded-lg shadow-[inset_0px_-4px_0px_0px_hsl(224,_28%,_35%)] text-[25px] font-extrabold font-spartan"
+										className={`select-none hover:pb-[2px] cursor-pointer ${Theme[togglePosition]['delete-reset-hover']} ${Theme[togglePosition]['delete-reset-bg']} w-[4.5rem] h-[3.1rem] md:w-20 md:h-[3.2rem] flex items-center justify-center text-white rounded-lg ${Theme[togglePosition]['delete-reset-shadow']} text-[25px] font-extrabold font-spartan`}
 									>
 										{key}
 									</div>
@@ -107,7 +114,7 @@ export default function Home() {
 									onClick={() =>
 										handleCalculatorKeyClick(key)
 									}
-									className="select-none hover:pb-[2px] cursor-pointer  hover:bg-[hsl(30,_35%,_95%)] bg-[hsl(30,_35%,_89%)] w-20 h-[3.2rem] flex items-center justify-center text-[hsl(221,_14%,_31%)] rounded-lg shadow-[inset_0px_-4px_0px_0px_hsl(28,_16%,_65%)] text-3xl font-extrabold font-spartan"
+									className={`select-none hover:pb-[2px] cursor-pointer  ${Theme[togglePosition]['keys-bg-hover']} ${Theme[togglePosition]['keys-bg']} w-[4.5rem] h-[3.1rem] md:w-20 md:h-[3.2rem] flex items-center justify-center ${Theme[togglePosition]['keys-text']} rounded-lg ${Theme[togglePosition]['keys-shadow']} text-3xl font-extrabold font-spartan`}
 								>
 									{key}
 								</div>
@@ -115,13 +122,13 @@ export default function Home() {
 						})}
 						<div
 							onClick={() => handleCalculatorKeyClick('RESET')}
-							className="select-none hover:pb-[2px]  cursor-pointer hover:bg-[hsl(225,_21%,_55%)]  bg-[hsl(225,_21%,_49%)] w-48 h-12 flex items-center justify-center text-white rounded-lg col-span-2 shadow-[inset_0px_-4px_0px_0px_hsl(224,_28%,_35%)]  text-xl font-semibold font-spartan"
+							className={`select-none hover:pb-[2px]  cursor-pointer ${Theme[togglePosition]['delete-reset-hover']}  ${Theme[togglePosition]['delete-reset-bg']} w-40 h-12 md:w-48 md:h-12 flex items-center justify-center text-white rounded-lg col-span-2 ${Theme[togglePosition]['delete-reset-shadow']}  text-xl font-semibold font-spartan`}
 						>
 							RESET
 						</div>
 						<div
 							onClick={() => handleCalculatorKeyClick('=')}
-							className="select-none hover:pb-[2px] cursor-pointer hover:bg-[hsl(6,_63%,_55%)] bg-[hsl(6,_63%,_50%)] w-48 h-12 flex items-center justify-center text-white rounded-lg col-span-2 shadow-[inset_0px_-4px_0px_0px_hsl(6,_70%,_34%)]  text-3xl font-extrabold font-spartan"
+							className={`select-none hover:pb-[2px] cursor-pointer ${Theme[togglePosition]['equal-hover']}  ${Theme[togglePosition]['equal-bg']} w-40 h-12 md:w-48 md:h-12 flex items-center justify-center ${Theme[togglePosition]['equal-text']} rounded-lg col-span-2 ${Theme[togglePosition]['equal-shadow']}  text-3xl font-extrabold font-spartan`}
 						>
 							=
 						</div>
